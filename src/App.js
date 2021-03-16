@@ -1,10 +1,8 @@
 import './App.css';
-
+import GameboardDOM from './DOM/GameboardDOM'
 function App() {
   return (
-    <div className="App">
-      Hello Fam
-    </div>
+   <GameboardDOM />
   );
 }
 
