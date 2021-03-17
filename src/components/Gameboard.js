@@ -7,6 +7,7 @@ const Gameboard = () => {
 
   const getFleet = () => fleet
   const getMisses = () => misses
+  const getFleetPoss = () => fleetPoss
 
   const createFleet = () => {
     const carrier = Ship(5);
@@ -15,6 +16,16 @@ const Gameboard = () => {
     const submarine = Ship(3);
     const patrol = Ship(2);
     fleet.push(carrier, battleship, destroyer, submarine, patrol)
+  }
+
+  const initFleet = () => {
+    createFleet();
+    placeShip(fleet[0], [1, 1]);
+    placeShip(fleet[1], [2, 9], false);
+    placeShip(fleet[2], [4, 0]);
+    placeShip(fleet[3], [7, 6], false);
+    placeShip(fleet[4], [3, 4]);
+    return fleet;
   }
 
   const isValidPos = (pos) => {
@@ -83,6 +94,7 @@ const Gameboard = () => {
     }
   }
 
+  //pass in fleet array
   const isFleetSunk = (ary) => {
     let sunkShips = []
     ary.forEach(ship => {
@@ -95,7 +107,7 @@ const Gameboard = () => {
 
   
 
-  return { createFleet, getFleet, placeShip, receiveAttack, getMisses, isFleetSunk }
+  return { createFleet, getFleetPoss, getFleet, placeShip, receiveAttack, getMisses, isFleetSunk, initFleet }
 }
 
 module.exports = Gameboard;
