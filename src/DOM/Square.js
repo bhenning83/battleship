@@ -2,12 +2,11 @@ import React from 'react'
 const classNames = require('classnames');
 
 function Square(props) {
-  const { onClick, coord, fleetPoss } = props
-
-  const isAShip = () => {
-    for (let i = 0; i < fleetPoss.length; i++) {
-      if ((fleetPoss[i][0] === coord[0]) 
-      && (fleetPoss[i][1] === coord[1])) {
+  const { coord, fleetPoss, misses, hits } = props
+  const isAMatch = (ary) => {
+    for (let i = 0; i < ary.length; i++) {
+      if ((ary[i][0] === coord[0]) 
+      && (ary[i][1] === coord[1])) {
         return true
       }
     }
@@ -15,12 +14,13 @@ function Square(props) {
 
   const classes = classNames({
     square: true,
-    ship: isAShip(),
+    ship: isAMatch(fleetPoss),
+    misses: isAMatch(misses),
+    hit: isAMatch(hits)
   }) 
 
   return (
-    <div className={classes} onClick={() => onClick(coord)}>
-    </div>
+    <div className={classes}></div>
   )
 }
 

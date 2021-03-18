@@ -8,6 +8,16 @@ const Gameboard = () => {
   const getFleet = () => fleet
   const getMisses = () => misses
   const getFleetPoss = () => fleetPoss
+  
+  const getHits = () => {
+    let hits = []
+    fleet.forEach(ship => {
+      if (ship.getHits().length > 0) {
+        ship.getHits().forEach(hit => hits.push(hit))
+      }
+    })
+    return hits
+  }
 
   const createFleet = () => {
     const carrier = Ship(5);
@@ -105,9 +115,19 @@ const Gameboard = () => {
     return sunkShips.length === ary.length ? true : false
   }
 
-  
+  const board = {
+    createFleet, 
+    getFleetPoss, 
+    getFleet, 
+    placeShip, 
+    receiveAttack, 
+    getMisses, 
+    isFleetSunk, 
+    initFleet, 
+    getHits
+  }
 
-  return { createFleet, getFleetPoss, getFleet, placeShip, receiveAttack, getMisses, isFleetSunk, initFleet }
+  return { createFleet, getFleetPoss, getFleet, placeShip, receiveAttack, getMisses, isFleetSunk, initFleet, getHits }
 }
 
 module.exports = Gameboard;

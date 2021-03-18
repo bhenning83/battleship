@@ -12,3 +12,9 @@
 .ship {
   background-color: gray;
 }
+.misses {
+  background-color: aqua;
+}
+.hit {
+  background-color: crimson;
+}
