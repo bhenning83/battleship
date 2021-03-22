@@ -1,8 +1,10 @@
 import './App.css';
-import GameboardDOM from './DOM/GameboardDOM'
+import GameDOM from './DOM/GameDOM'
 function App() {
   return (
-   <GameboardDOM />
+    <div>
+      <GameDOM />
+    </div>
   );
 }
 

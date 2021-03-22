@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import Square from './Square'
 
-const Gameboard = require('../components/Gameboard')
-
-function GameboardDOM() {
-  const [board, setBoard] = useState(Gameboard());
+function GameboardDOM(props) {
+  const {board, player, togTurn} = props
   const [fleet, setFleet] = useState(board.initFleet())
-  const [fleetPoss, setFleetPoss] = useState(board.getFleetPoss())
+  const [fleetPoss] = useState(board.getFleetPoss())
   const [misses, setMisses] = useState([])
   const [hits, setHits] = useState([])
   const column = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -14,13 +12,17 @@ function GameboardDOM() {
   for (let i = 0; i < 10; i++) {
     rows[i] = column
   }
-
+  
   const targetSelected = (ary) => {
-    board.receiveAttack(ary)
-    let mis = board.getMisses()
-    let hit = board.getHits()
-    setMisses([...mis]) //references new array to trigger rerender
-    setHits([...hit])
+    let turn = player.getTurn();
+    if (turn === true) {
+      player.attack(board, ary)
+      let mis = board.getMisses()
+      let hit = board.getHits()
+      setMisses([...mis]) //references new array to trigger rerender
+      setHits([...hit])
+      togTurn()
+    }
   }
 
   return(

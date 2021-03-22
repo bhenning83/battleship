@@ -18,3 +18,7 @@
 .hit {
   background-color: crimson;
 }
+.board-container {
+  display: flex;
+  justify-content: space-around;
+}

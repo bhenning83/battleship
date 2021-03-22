@@ -1,10 +1,14 @@
-const Player = () => {
+const Player = (turn) => {
   const prevTargets = [];
-  let computer = true;
+  let computer = false;
 
   const togComputer = () => {
     computer = !computer;
   }
+
+  const getTurn = () => turn;
+
+  const setTurn = (newTurn) => turn = newTurn;
 
   const isValidAttack = (target) => {
     let legal = true
@@ -41,7 +45,7 @@ const Player = () => {
   } 
 
   const attack = (board, coord = []) => {
-    return computer === true ? compAttack() : playerAttack(board, coord)
+    return computer === true ? compAttack(board) : playerAttack(board, coord)
   }
 
   const compAttack = (board) => {
@@ -50,7 +54,7 @@ const Player = () => {
     return isValidAttack([x, y]) ? board.receiveAttack(x, y) : 'Illegal attack'
   }
 
-  return { attack, compAttack, togComputer }
+  return { attack, compAttack, togComputer, getTurn, setTurn }
 }
 
 module.exports = Player;
