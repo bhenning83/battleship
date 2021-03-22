@@ -6,6 +6,8 @@ const Game = () => {
   const player2 = Player(false);
   const board1 = Gameboard();
   const board2 = Gameboard();
+  board1.initFleet();
+  board2.initFleet();
 
   const getPlayers = () => [player1, player2];
   const getBoards = () => [board1, board2];

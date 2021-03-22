@@ -3,7 +3,6 @@ import Square from './Square'
 
 function GameboardDOM(props) {
   const {board, player, togTurn} = props
-  const [fleet, setFleet] = useState(board.initFleet())
   const [fleetPoss] = useState(board.getFleetPoss())
   const [misses, setMisses] = useState([])
   const [hits, setHits] = useState([])
@@ -16,12 +15,14 @@ function GameboardDOM(props) {
   const targetSelected = (ary) => {
     let turn = player.getTurn();
     if (turn === true) {
-      player.attack(board, ary)
-      let mis = board.getMisses()
-      let hit = board.getHits()
-      setMisses([...mis]) //references new array to trigger rerender
-      setHits([...hit])
-      togTurn()
+      if (player.isValidAttack(ary)) {
+        player.attack(board, ary)
+        let mis = board.getMisses()
+        let hit = board.getHits()
+        setMisses([...mis]) //references new array to trigger rerender
+        setHits([...hit])
+        togTurn()
+      }
     }
   }
 
@@ -48,3 +49,5 @@ function GameboardDOM(props) {
 }
 
 export default GameboardDOM;
+
+//NEED TO PREVENT TARGETING PREVIOUSLY TARGETED SQUARES (WASTES THE TURN)

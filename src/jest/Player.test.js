@@ -28,12 +28,12 @@ describe('Player', () => {
   })
 
   it('Determines if target is a legal move', () => {
-    expect(player.attack(board, [10,10])).toBe('Illegal attack')
+    expect(player.isValidAttack([10,10])).toBe(false)
   })
 
   it("Won't allow multiple attacks to same coord", () => {
     player.attack(board, [2, 3]);
-    expect(player.attack(board, [2, 3])).toBe('Illegal attack')
+    expect(player.isValidAttack([2, 3])).toBe(false)
   })
 
   it('Computer player can attack', () => {

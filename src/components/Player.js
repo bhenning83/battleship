@@ -28,7 +28,7 @@ const Player = (turn) => {
     || (target[1] < 0)) {
       legal = false;
     }
-    return legal === true ? prevTargets.push(target) : false
+    return legal
   }
 
   const getTarget = () => {
@@ -37,11 +37,8 @@ const Player = (turn) => {
 
   const playerAttack = (board, coord) => {
     const target = coord || getTarget();
-    if (isValidAttack(target)) {
-      board.receiveAttack(target)
-    } else {
-      return 'Illegal attack'
-    }
+    board.receiveAttack(target);
+    prevTargets.push(target);
   } 
 
   const attack = (board, coord = []) => {
@@ -51,10 +48,12 @@ const Player = (turn) => {
   const compAttack = (board) => {
     const x = Math.floor(Math.random() * 10);
     const y = Math.floor(Math.random() * 10);
-    return isValidAttack([x, y]) ? board.receiveAttack(x, y) : 'Illegal attack'
+    board.receiveAttack([x, y]);
+    prevTargets.push([x, y]);
+
   }
 
-  return { attack, compAttack, togComputer, getTurn, setTurn }
+  return { attack, compAttack, togComputer, getTurn, setTurn, isValidAttack }
 }
 
 module.exports = Player;
