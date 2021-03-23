@@ -2,7 +2,7 @@ import React from 'react'
 const classNames = require('classnames');
 
 function Square(props) {
-  const { coord, fleetPoss, misses, hits } = props
+  const { coord, fleetPoss, misses, hits, sunkShips } = props
   const isAMatch = (ary) => {
     for (let i = 0; i < ary.length; i++) {
       if ((ary[i][0] === coord[0]) 
@@ -16,7 +16,8 @@ function Square(props) {
     square: true,
     ship: isAMatch(fleetPoss),
     misses: isAMatch(misses),
-    hit: isAMatch(hits)
+    hit: isAMatch(hits),
+    sunk: isAMatch(sunkShips)
   }) 
 
   return (
