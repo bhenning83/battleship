@@ -1,4 +1,4 @@
-const Player = (turn) => {
+const Player = (title, turn) => {
   const prevTargets = [];
   let computer = false;
 
@@ -7,6 +7,10 @@ const Player = (turn) => {
   }
 
   const getTurn = () => turn;
+
+  const getComputer = () => computer;
+
+  const getTitle = () => title
 
   const setTurn = (newTurn) => turn = newTurn;
 
@@ -53,7 +57,7 @@ const Player = (turn) => {
 
   }
 
-  return { attack, compAttack, togComputer, getTurn, setTurn, isValidAttack }
+  return { attack, compAttack, togComputer, getComputer, getTurn, setTurn, isValidAttack, getTitle }
 }
 
 module.exports = Player;

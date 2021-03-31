@@ -115,6 +115,18 @@ const Gameboard = () => {
     return sunkShips.length === ary.length ? true : false
   }
 
+  const getSunkShips = () => {
+    let ss = []
+    fleet.forEach(ship => {
+      if (ship.isSunk()) {
+        ship.getPosition().forEach(pos => {
+          ss.push(pos);
+        })
+      }
+    })
+    return ss;
+  }
+
   const board = {
     createFleet, 
     getFleetPoss, 
@@ -124,10 +136,11 @@ const Gameboard = () => {
     getMisses, 
     isFleetSunk, 
     initFleet, 
-    getHits
+    getHits,
+    getSunkShips
   }
 
-  return { createFleet, getFleetPoss, getFleet, placeShip, receiveAttack, getMisses, isFleetSunk, initFleet, getHits }
+  return board
 }
 
 module.exports = Gameboard;
