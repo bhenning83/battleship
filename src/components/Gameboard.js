@@ -4,20 +4,13 @@ const Gameboard = () => {
   let fleet = [];
   let fleetPoss = [];
   let misses = [];
+  let hits = []
 
   const getFleet = () => fleet
   const getMisses = () => misses
   const getFleetPoss = () => fleetPoss
-  
-  const getHits = () => {
-    let hits = []
-    fleet.forEach(ship => {
-      if (ship.getHits().length > 0) {
-        ship.getHits().forEach(hit => hits.push(hit))
-      }
-    })
-    return hits
-  }
+  const getHits = () => hits  
+
 
   const createFleet = () => {
     const carrier = Ship(5);
@@ -95,6 +88,7 @@ const Gameboard = () => {
       poss.forEach(pos => {
         if ((pos[0] === ary[0]) && pos[1] === ary[1]) {
           ship.recordHit(ary);
+          hits.push(ary)
           hit = true;
         }
       })

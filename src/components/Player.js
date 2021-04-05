@@ -52,9 +52,12 @@ const Player = (title, turn) => {
   const compAttack = (board) => {
     const x = Math.floor(Math.random() * 10);
     const y = Math.floor(Math.random() * 10);
-    board.receiveAttack([x, y]);
-    prevTargets.push([x, y]);
-
+    if (isValidAttack([x, y])) {
+      board.receiveAttack([x, y]);
+      prevTargets.push([x, y]);
+    } else {
+      compAttack(board)
+    }
   }
 
   return { attack, compAttack, togComputer, getComputer, getTurn, setTurn, isValidAttack, getTitle }

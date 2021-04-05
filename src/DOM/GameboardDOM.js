@@ -5,8 +5,8 @@ import uniqid from 'uniqid';
 function GameboardDOM(props) {
   const {board, player, gameOver, playTurn, turn} = props
   const [fleetPoss] = useState(board.getFleetPoss())
-  const [misses, setMisses] = useState(board.getMisses())
   const [hits, setHits] = useState(board.getHits())
+  const [misses, setMisses] = useState(board.getMisses())
   const [sunkShips, setSunkShips] = useState([])
   const column = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const rows = [];
@@ -18,10 +18,10 @@ function GameboardDOM(props) {
     if ((turn === true)
     && player.isValidAttack(ary)) {
       playTurn(ary, player);
-      let mis = board.getMisses()
       let hit = board.getHits()
-      setMisses([...mis]) //references new array to trigger rerender
+      let mis = board.getMisses()
       setHits([...hit])
+      setMisses([...mis]) //references new array to trigger rerender
     }
   }
 
@@ -40,9 +40,9 @@ function GameboardDOM(props) {
           {x.map(y => {
           return ( 
             //need to do 9-idx to 'flip the axis'
-            <div onClick={() => targetSelected([9 - idx, y - 1])} key={uniqid()}>
+            <div onClick={() => targetSelected([y - 1, 9 - idx])} key={uniqid()}>
               <Square 
-              coord = {[9 - idx, y - 1]}
+              coord = {[y - 1, 9 - idx]}
               fleetPoss = {fleetPoss}
               misses = {misses}
               hits = {hits}
@@ -58,6 +58,3 @@ function GameboardDOM(props) {
 }
 
 export default GameboardDOM;
-
-//it's not rerendering because the misses and set states are only set on a target selected click. 
-//need to fetch them from the board.getMisses()
