@@ -5,12 +5,13 @@ const Gameboard = () => {
   let fleetPoss = [];
   let misses = [];
   let hits = []
+  let sunkShips = [];
 
   const getFleet = () => fleet
   const getMisses = () => misses
   const getFleetPoss = () => fleetPoss
   const getHits = () => hits  
-
+  const getSunkShips = () => sunkShips
 
   const createFleet = () => {
     const carrier = Ship(5);
@@ -87,9 +88,10 @@ const Gameboard = () => {
       const poss = ship.getPosition();
       poss.forEach(pos => {
         if ((pos[0] === ary[0]) && pos[1] === ary[1]) {
+          hit = true;
           ship.recordHit(ary);
           hits.push(ary)
-          hit = true;
+          recordSunkShips();
         }
       })
     })
@@ -109,16 +111,15 @@ const Gameboard = () => {
     return sunkShips.length === ary.length ? true : false
   }
 
-  const getSunkShips = () => {
-    let ss = []
+  const recordSunkShips = () => {
+    sunkShips = [];
     fleet.forEach(ship => {
       if (ship.isSunk()) {
         ship.getPosition().forEach(pos => {
-          ss.push(pos);
+          sunkShips.push(pos);
         })
       }
     })
-    return ss;
   }
 
   const board = {

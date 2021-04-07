@@ -8,6 +8,8 @@ function GameDOM() {
   const [player2] = useState(game.getPlayers()[1])
   const [board1] = useState(game.getBoards()[0])
   const [board2] = useState(game.getBoards()[1])
+  const [sunkShips1, setSunkShips1] = useState(board1.getSunkShips())
+  const [sunkShips2, setSunkShips2] = useState(board2.getSunkShips())
   const [turn, setTurn] = useState(true)
 
   const playTurn = async(ary, player) => {
@@ -28,13 +30,29 @@ function GameDOM() {
   
   useEffect(() => {
     computerPlay()
+    let ss1 = board1.getSunkShips();
+    let ss2 = board2.getSunkShips();
+    setSunkShips1([...ss1])
+    setSunkShips2([...ss2])
   }, [turn])
 
   return (
     //receives opponent's board
     <div className='board-container'> 
-      <GameboardDOM board={board1} player={player2} gameOver={game.gameOver} playTurn={playTurn} turn={!turn}/>
-      <GameboardDOM board={board2} player={player1} gameOver={game.gameOver} playTurn={playTurn} turn={turn}/>
+      <GameboardDOM 
+      board={board1} 
+      player={player2} 
+      gameOver={game.gameOver} 
+      playTurn={playTurn} 
+      sunkShips={sunkShips1} 
+      turn={!turn}/>
+      <GameboardDOM 
+      board={board2} 
+      player={player1} 
+      gameOver={game.gameOver} 
+      playTurn={playTurn} 
+      sunkShips={sunkShips2} 
+      turn={turn}/>
     </div>
   )
 }
