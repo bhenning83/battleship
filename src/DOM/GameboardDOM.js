@@ -5,6 +5,7 @@ import uniqid from 'uniqid';
 function GameboardDOM(props) {
   const {board, player, playTurn, sunkShips, turn} = props;
   const [counter, setCounter] = useState(0);
+  const [coord, setCoord] = useState([])
   const [vert, setVert] = useState(true);
   const [fleetPoss] = useState(board.getFleetPoss());
   const [fleet] = useState(board.createFleet());
@@ -30,7 +31,7 @@ function GameboardDOM(props) {
 
   const placeFleet = (ary) => {
     if (board.layoutPos(fleet[counter], ary, vert) !== false) {
-      board.placeShip(fleet[counter], ary);
+      board.placeShip(fleet[counter], ary, vert);
       setGhost([])
       setCounter(c => counter + 1);
     }
@@ -41,11 +42,32 @@ function GameboardDOM(props) {
   }
 
   const handleHover = (ary) => {
+    setCoord([...ary])
     if (counter < 5) {
-      const g = board.layoutPos(fleet[counter], ary, vert);
-      g === false ? setGhost([]) : setGhost([...g])
+      changeGhost(ary)
     }
   }
+
+  const handleKeyDown = async(e) => {
+    if (e.keyCode === 32) {
+
+      //setState is asynchronous, so cannot wait for setVert to execute before changing ghost
+      changeGhost(coord, !vert); 
+      setVert(v => !vert);
+    }
+  }
+
+  const changeGhost = (ary = coord, v = vert) => {
+    const g = board.layoutPos(fleet[counter], ary, v);
+    g === false ? setGhost([]) : setGhost([...g])
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return() => {
+      document.removeEventListener('keydown', handleKeyDown)
+    };
+  })
 
   return(
     <div className='board'>
@@ -56,8 +78,7 @@ function GameboardDOM(props) {
             //need to do 9-idx to 'flip the axis'
             <div key={uniqid()}
             onMouseEnter={() => handleHover([y - 1, 9 - idx])}
-            onClick={() => handleClick([y - 1, 9 - idx])}
-            onKeyPress={handleKey} >
+            onClick={() => handleClick([y - 1, 9 - idx])} >
               <Square 
               coord = {[y - 1, 9 - idx]}
               fleetPoss = {fleetPoss}
