@@ -3,11 +3,14 @@ import Square from './Square'
 import uniqid from 'uniqid';
 
 function GameboardDOM(props) {
-  const {board, player, gameOver, playTurn, sunkShips, turn} = props
-  const [fleetPoss] = useState(board.getFleetPoss())
-  const [hits, setHits] = useState(board.getHits())
-  const [misses, setMisses] = useState(board.getMisses())
-  // const [sunkShips, setSunkShips] = useState(board.getSunkShips())
+  const {board, player, playTurn, sunkShips, turn} = props;
+  const [counter, setCounter] = useState(0);
+  const [vert, setVert] = useState(true);
+  const [fleetPoss] = useState(board.getFleetPoss());
+  const [fleet] = useState(board.createFleet());
+  const [hits, setHits] = useState(board.getHits());
+  const [misses, setMisses] = useState(board.getMisses());
+  const [ghost, setGhost] = useState([]) //this will indicate where a ship will be during placement
   const column = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const rows = [];
   for (let i = 0; i < 10; i++) {
@@ -24,14 +27,17 @@ function GameboardDOM(props) {
       setMisses([...mis]) //references new array to trigger rerender
     }
   }
-  
-  useEffect(() => {
-    // let ss = board.getSunkShips();
-    // setSunkShips([...ss])
-    if (board.isFleetSunk(board.getFleet())) {
-      gameOver(player)
+
+  const placeFleet = (ary) => {
+    if (board.placeShip(fleet[counter], ary) !== false) {
+      board.placeShip(fleet[counter], ary)
+      setCounter(c => counter + 1)
     }
-  }, [hits]);
+  }
+
+  const handleClick = (ary) => {
+    counter < 5 ? placeFleet(ary) : targetSelected(ary);
+  }
 
   return(
     <div className='board'>
@@ -40,7 +46,9 @@ function GameboardDOM(props) {
           {x.map(y => {
           return ( 
             //need to do 9-idx to 'flip the axis'
-            <div onClick={() => targetSelected([y - 1, 9 - idx])} key={uniqid()}>
+            <div key={uniqid()}
+            onClick={() => handleClick([y - 1, 9 - idx])} 
+            onHover={handleHover([y - 1, 9 - idx])}>
               <Square 
               coord = {[y - 1, 9 - idx]}
               fleetPoss = {fleetPoss}
@@ -59,4 +67,4 @@ function GameboardDOM(props) {
 
 export default GameboardDOM;
 
-//hit's aint actually changing. It's reset each time it rerenders and then never changes?
+//a counter, first 5 clicks will place ships. downside: it locks them in. 

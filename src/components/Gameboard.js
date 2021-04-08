@@ -20,8 +20,10 @@ const Gameboard = () => {
     const submarine = Ship(3);
     const patrol = Ship(2);
     fleet.push(carrier, battleship, destroyer, submarine, patrol)
+    return fleet
   }
 
+  //auto place ships during development
   const initFleet = () => {
     createFleet();
     placeShip(fleet[0], [1, 1]);
@@ -121,6 +123,8 @@ const Gameboard = () => {
       }
     })
   }
+
+  // initFleet()
 
   const board = {
     createFleet, 
