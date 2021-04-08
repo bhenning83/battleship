@@ -10,22 +10,27 @@ function GameDOM() {
   const [player2] = useState(Player('Player 2', false))
   const [board1] = useState(Gameboard())
   const [board2] = useState(Gameboard())
-  const [sunkShips1, setSunkShips1] = useState(board1.getSunkShips())
-  const [sunkShips2, setSunkShips2] = useState(board2.getSunkShips())
+  const [fleet1, setFleet1] = useState([])
+  const [fleet2, setFleet2] = useState([])
+  const [sunkShips1, setSunkShips1] = useState([])
+  const [sunkShips2, setSunkShips2] = useState([])
   const [turn, setTurn] = useState(true)
 
-  const playTurn = async(ary, player) => {
-    const oppBoard = player === player1 ? board2 : board1;
-    if (player.isValidAttack(ary)) {
-      await player.attack(oppBoard, ary)
-      setTurn(t => !turn)
+  const playTurn = (ary, opponent) => {
+    const oppBoard = opponent === player2 ? board2 : board1;
+    const player = opponent === player2 ? player1 : player2;
+    if (board1.isFleetPlaced() && board2.isFleetPlaced()) {
+      if (player.isValidAttack(ary)) {
+        player.attack(oppBoard, ary)
+        setTurn(t => !turn)
+      }
     }
   }
 
-  const computerPlay = async () => {
+  const computerPlay = () => {
     if ((player2.getComputer() === true)
     && (turn === false)) {
-      await player2.attack(board1)
+      player2.attack(board1)
       setTurn(t => !turn)
     }
   }
@@ -43,7 +48,9 @@ function GameDOM() {
   
   useEffect(() => {
     if (startGame === true) {
-      player2.togComputer()
+      player2.togComputer();
+      setFleet1(board1.createFleet())
+      setFleet2(board2.initFleet())
       setStartGame(startGame => !startGame)
     }
     computerPlay()
@@ -55,22 +62,23 @@ function GameDOM() {
   }, [turn])
 
   return (
-    //receives opponent's board
     <div> 
       <button onClick={() => player2.togComputer()}>Toggle Computer</button>
       <div className='board-container'>
         <GameboardDOM 
-        board={board1} 
-        player={player2} 
-        playTurn={playTurn} 
-        sunkShips={sunkShips1} 
-        turn={!turn}/>
-        <GameboardDOM 
-        board={board2} 
+        board={board1}   
         player={player1} 
         playTurn={playTurn} 
+        sunkShips={sunkShips1} 
+        turn={!turn}
+        fleet={fleet1}/>
+        <GameboardDOM 
+        board={board2}  
+        player={player2} 
+        playTurn={playTurn} 
         sunkShips={sunkShips2} 
-        turn={turn}/>
+        turn={turn}
+        fleet={fleet2}/>
       </div>
     </div>
   )
@@ -78,5 +86,3 @@ function GameDOM() {
 
 export default GameDOM
 
-//GameDom needs to check for validity of attack. Move player.isValidAttack here, and also 
-//need to check for repeat attacks. Will need to get prevTargets from player with player.getPrevTargets()

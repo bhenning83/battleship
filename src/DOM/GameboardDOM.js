@@ -3,12 +3,11 @@ import Square from './Square'
 import uniqid from 'uniqid';
 
 function GameboardDOM(props) {
-  const {board, player, playTurn, sunkShips, turn} = props;
+  const {board, player, playTurn, sunkShips, turn, fleet} = props;
   const [counter, setCounter] = useState(0);
   const [coord, setCoord] = useState([])
   const [vert, setVert] = useState(true);
   const [fleetPoss] = useState(board.getFleetPoss());
-  const [fleet] = useState(board.createFleet());
   const [hits, setHits] = useState(board.getHits());
   const [misses, setMisses] = useState(board.getMisses());
   const [ghost, setGhost] = useState([]) //this will indicate where a ship will be during placement
@@ -49,11 +48,13 @@ function GameboardDOM(props) {
   }
 
   const handleKeyDown = async(e) => {
-    if (e.keyCode === 32) {
-
-      //setState is asynchronous, so cannot wait for setVert to execute before changing ghost
-      changeGhost(coord, !vert); 
-      setVert(v => !vert);
+    if (counter < 5) {
+      if (e.keyCode === 32) {
+  
+        //setState is asynchronous, so cannot wait for setVert to execute before changing ghost
+        changeGhost(coord, !vert); 
+        setVert(v => !vert);
+      }
     }
   }
 
@@ -63,6 +64,7 @@ function GameboardDOM(props) {
   }
 
   useEffect(() => {
+    if (player.getComputer() === true) setCounter(5)
     document.addEventListener('keydown', handleKeyDown);
     return() => {
       document.removeEventListener('keydown', handleKeyDown)
@@ -98,4 +100,7 @@ function GameboardDOM(props) {
 
 export default GameboardDOM;
 
-//a counter, first 5 clicks will place ships. downside: it locks them in. 
+//To-do:
+// make it so opponent's board isn't visible
+// random placement of ships by the computer to start game
+// fix game over

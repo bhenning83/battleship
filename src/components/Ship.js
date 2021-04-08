@@ -1,8 +1,12 @@
 const Ship = (length) => {
   let hits = [];
   let position = [];
+  let placed = false;
 
-  const setPosition = (ary) => position = ary;
+  const setPosition = (ary) => {
+    position = ary;
+    placed = true;
+  } 
 
   const getPosition = () => position
 
@@ -12,6 +16,7 @@ const Ship = (length) => {
 
   const getHits = () => hits;
   
+  const isPlaced = () => placed
 
   const getLength = () => length;
 
@@ -19,7 +24,7 @@ const Ship = (length) => {
     return (hits.length === length) ? true : false
   }
 
-  return { setPosition, getPosition, getLength, recordHit, getHits, isSunk }
+  return { setPosition, getPosition, getLength, recordHit, getHits, isSunk, isPlaced }
 }
 
 module.exports = Ship;

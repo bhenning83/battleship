@@ -82,9 +82,11 @@ const Gameboard = () => {
   }
 
   const placeShip = (ship, beg, vert = true) => {
-    let position = layoutPos(ship, beg, vert)
-    position.forEach(pos => fleetPoss.push(pos))
-    ship.setPosition(position);
+    let position = layoutPos(ship, beg, vert);
+    if (position !== false) {
+      position.forEach(pos => fleetPoss.push(pos))
+      ship.setPosition(position);
+    }
   }
 
   const receiveAttack = (ary) => {
@@ -129,7 +131,12 @@ const Gameboard = () => {
     })
   }
 
-  // initFleet()
+  const isFleetPlaced = () => {
+    for (let i = 0; i < fleet.length; i++) {
+      if (fleet[i].isPlaced() === false) return false
+    }
+    return true
+  }
 
   const board = {
     createFleet, 
@@ -142,7 +149,8 @@ const Gameboard = () => {
     initFleet, 
     getHits,
     getSunkShips,
-    layoutPos
+    layoutPos,
+    isFleetPlaced
   }
 
   return board
