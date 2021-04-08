@@ -54,7 +54,7 @@ const Gameboard = () => {
     return true;
   }
 
-  const placeShip = (ship, beg, vert = true) => {
+  const layoutPos = (ship, beg, vert) => {
     let x = beg[0];
     let y = beg[1];
     let position = []
@@ -78,6 +78,11 @@ const Gameboard = () => {
         } else return false
       }
     }
+    return position
+  }
+
+  const placeShip = (ship, beg, vert = true) => {
+    let position = layoutPos(ship, beg, vert)
     position.forEach(pos => fleetPoss.push(pos))
     ship.setPosition(position);
   }
@@ -136,7 +141,8 @@ const Gameboard = () => {
     isFleetSunk, 
     initFleet, 
     getHits,
-    getSunkShips
+    getSunkShips,
+    layoutPos
   }
 
   return board

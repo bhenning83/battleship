@@ -29,14 +29,22 @@ function GameboardDOM(props) {
   }
 
   const placeFleet = (ary) => {
-    if (board.placeShip(fleet[counter], ary) !== false) {
-      board.placeShip(fleet[counter], ary)
-      setCounter(c => counter + 1)
+    if (board.layoutPos(fleet[counter], ary, vert) !== false) {
+      board.placeShip(fleet[counter], ary);
+      setGhost([])
+      setCounter(c => counter + 1);
     }
   }
 
   const handleClick = (ary) => {
     counter < 5 ? placeFleet(ary) : targetSelected(ary);
+  }
+
+  const handleHover = (ary) => {
+    if (counter < 5) {
+      const g = board.layoutPos(fleet[counter], ary, vert);
+      g === false ? setGhost([]) : setGhost([...g])
+    }
   }
 
   return(
@@ -47,14 +55,16 @@ function GameboardDOM(props) {
           return ( 
             //need to do 9-idx to 'flip the axis'
             <div key={uniqid()}
-            onClick={() => handleClick([y - 1, 9 - idx])} 
-            onHover={handleHover([y - 1, 9 - idx])}>
+            onMouseEnter={() => handleHover([y - 1, 9 - idx])}
+            onClick={() => handleClick([y - 1, 9 - idx])}
+            onKeyPress={handleKey} >
               <Square 
               coord = {[y - 1, 9 - idx]}
               fleetPoss = {fleetPoss}
               misses = {misses}
               hits = {hits}
-              sunkShips = {sunkShips} />
+              sunkShips = {sunkShips}
+              ghost = {ghost} />
             </div>
           )
         })}
