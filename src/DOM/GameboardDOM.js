@@ -43,7 +43,12 @@ function GameboardDOM(props) {
   const handleHover = (ary) => {
     setCoord([...ary])
     if (counter < 5) {
-      changeGhost(ary)
+
+      //prevents error from hovering before initiating fleet
+      if (fleet.length > 0) {
+        console.log(fleet)
+        changeGhost(ary)
+      }
     }
   }
 
