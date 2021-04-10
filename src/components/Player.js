@@ -1,5 +1,5 @@
 const Player = (title, turn) => {
-  const prevTargets = [];
+  let prevTargets = [];
   let computer = false;
 
   const togComputer = () => {

@@ -3,7 +3,7 @@ import Square from './Square'
 import uniqid from 'uniqid';
 
 function GameboardDOM(props) {
-  const {board, player, playTurn, sunkShips, turn, fleet} = props;
+  const {board, player, attacker, playTurn, sunkShips, turn, fleet} = props;
   const [counter, setCounter] = useState(0);
   const [coord, setCoord] = useState([])
   const [vert, setVert] = useState(true);
@@ -19,8 +19,8 @@ function GameboardDOM(props) {
   
   const targetSelected = (ary) => {
     if ((turn === true)
-    && player.isValidAttack(ary)) {
-      playTurn(ary, player);
+    && attacker.isValidAttack(ary)) {
+      playTurn(ary, attacker);
       let hit = board.getHits()
       let mis = board.getMisses()
       setHits([...hit])
@@ -46,7 +46,6 @@ function GameboardDOM(props) {
 
       //prevents error from hovering before initiating fleet
       if (fleet.length > 0) {
-        console.log(fleet)
         changeGhost(ary)
       }
     }
@@ -54,7 +53,7 @@ function GameboardDOM(props) {
 
   const handleKeyDown = async(e) => {
     if (counter < 5) {
-      if (e.keyCode === 32) {
+      if (e.keyCode === 32) { //if space bar was pressed
   
         //setState is asynchronous, so cannot wait for setVert to execute before changing ghost
         changeGhost(coord, !vert); 
@@ -92,7 +91,8 @@ function GameboardDOM(props) {
               misses = {misses}
               hits = {hits}
               sunkShips = {sunkShips}
-              ghost = {ghost} />
+              ghost = {ghost}
+              player = {player} />
             </div>
           )
         })}
@@ -106,6 +106,5 @@ function GameboardDOM(props) {
 export default GameboardDOM;
 
 //To-do:
-// make it so opponent's board isn't visible
 // random placement of ships by the computer to start game
 // fix game over

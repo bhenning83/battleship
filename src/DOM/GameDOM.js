@@ -16,22 +16,19 @@ function GameDOM() {
   const [sunkShips2, setSunkShips2] = useState([])
   const [turn, setTurn] = useState(true)
 
-  const playTurn = (ary, opponent) => {
-    const oppBoard = opponent === player2 ? board2 : board1;
-    const player = opponent === player2 ? player1 : player2;
+  const playTurn = (ary, attacker) => {
+    const oppBoard = attacker === player1 ? board2 : board1;
     if (board1.isFleetPlaced() && board2.isFleetPlaced()) {
-      if (player.isValidAttack(ary)) {
-        player.attack(oppBoard, ary)
-        setTurn(t => !turn)
-      }
+      attacker.attack(oppBoard, ary)
+      setTurn(t => !turn)
     }
   }
 
-  const computerPlay = () => {
+  const computerPlay = async() => {
     if ((player2.getComputer() === true)
     && (turn === false)) {
-      player2.attack(board1)
-      setTurn(t => !turn)
+      await player2.attack(board1)
+      await setTurn(t => !turn)
     }
   }
 
@@ -68,6 +65,7 @@ function GameDOM() {
         <GameboardDOM 
         board={board1}   
         player={player1} 
+        attacker={player2}
         playTurn={playTurn} 
         sunkShips={sunkShips1} 
         turn={!turn}
@@ -75,6 +73,7 @@ function GameDOM() {
         <GameboardDOM 
         board={board2}  
         player={player2} 
+        attacker={player1}
         playTurn={playTurn} 
         sunkShips={sunkShips2} 
         turn={turn}
