@@ -17,10 +17,14 @@ function GameDOM() {
   const [turn, setTurn] = useState(true)
 
   const playTurn = (ary, attacker) => {
-    const oppBoard = attacker === player1 ? board2 : board1;
-    if (board1.isFleetPlaced() && board2.isFleetPlaced()) {
-      attacker.attack(oppBoard, ary)
-      setTurn(t => !turn)
+    if (player1.getTitle() == undefined) {
+      alert("WHAT'S YOUR DAMN NAME?")
+    } else {
+      const oppBoard = attacker === player1 ? board2 : board1;
+      if (board1.isFleetPlaced() && board2.isFleetPlaced()) {
+        attacker.attack(oppBoard, ary)
+        setTurn(t => !turn)
+      }
     }
   }
 
@@ -38,7 +42,7 @@ function GameDOM() {
       if (board.isFleetSunk(board.getFleet())) {
 
         //locks out the turn so neither player can play
-        setTurn(t => 0)
+        setTurn(t => 'gameover')
         let winner = board === board2 ? player1 : player2;
         document.querySelector('.announcement').textContent = `${winner.getTitle()} is the winner!`
       }
@@ -50,16 +54,16 @@ function GameDOM() {
       document.querySelector('.announcement').textContent = 'Fire at will'
     }
   }
-  
-  useEffect(() => {
-    if (gameSetup === false) {
-      player2.togComputer();
-      player2.setTitle = 'Computer'
-      setFleet1(board1.createFleet())
-      setFleet2(board2.initFleet())
-      setgameSetup(gameSetup => !gameSetup)
-    }
-    computerPlay()
+
+  const initGamePieces = () => {
+    player2.togComputer();
+    player2.setTitle = 'Computer'
+    setFleet1(board1.createFleet())
+    setFleet2(board2.initFleet())
+    setgameSetup(gameSetup => !gameSetup)
+  }
+
+  const endTurn = () => {
     if (turn === true && gameSetup === true) {
       document.querySelector('.announcement').textContent = 'Fire at will'
     }
@@ -68,12 +72,20 @@ function GameDOM() {
     setSunkShips1([...ss1])
     setSunkShips2([...ss2])
     checkGameOver()
+  }
+  
+  useEffect(() => {
+    if (gameSetup === false) {
+      initGamePieces()
+    }
+    computerPlay()
+    endTurn()
   }, [turn])
 
   return (
     <div> 
       <button onClick={() => player2.togComputer()}>Toggle Computer</button>
-      <div className={'announcement'} style={{textAlign: 'center', border: '1px solid black'}}>Place yer ships</div>
+      <div className={'announcement'} style={{textAlign: 'center', border: '1px solid black'}}>Enter Yer Name</div>
       <div style={{display: 'flex', justifyContent: 'space-around'}}>
         <NameBox player={player1} id='title1'/>
         <h3>Computer</h3>

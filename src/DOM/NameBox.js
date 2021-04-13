@@ -10,10 +10,10 @@ function NameBox(props) {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     document.getElementById(id).style.display='none';
     document.querySelector(`#${id} + h3`).style.display='block';
-    player.setTitle(title)
+    player.setTitle(title);
   }
 
   return(

@@ -23,14 +23,28 @@ const Gameboard = () => {
     return fleet
   }
 
+  const placeRandom = (ship) => {
+    const x = Math.floor(Math.random() * 10);
+    const y = Math.floor(Math.random() * 10);
+    const z = Math.floor(Math.random() * 10);
+    const vert = z % 2 === 0 ? true : false;
+
+    let position = layoutPos(ship, [x, y], vert);
+    if (position !== false) {
+      placeShip(ship, [x, y], vert)
+    } else {
+      placeRandom(ship)
+    }
+  }
+
   //auto place ships during development
-  const initFleet = () => {
+  const initFleet = async () => {
     createFleet();
-    placeShip(fleet[0], [1, 1]);
-    placeShip(fleet[1], [2, 9], false);
-    placeShip(fleet[2], [4, 0]);
-    placeShip(fleet[3], [7, 6], false);
-    placeShip(fleet[4], [3, 4]);
+    await placeRandom(fleet[0], [1, 1]);
+    await placeRandom(fleet[1], [2, 9]);
+    await placeRandom(fleet[2], [4, 0]);
+    await placeRandom(fleet[3], [7, 6]);
+    await placeRandom(fleet[4], [3, 4]);
     return fleet;
   }
 
@@ -86,6 +100,8 @@ const Gameboard = () => {
     if (position !== false) {
       position.forEach(pos => fleetPoss.push(pos))
       ship.setPosition(position);
+    } else {
+      return false
     }
   }
 

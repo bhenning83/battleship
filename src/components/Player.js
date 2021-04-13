@@ -69,7 +69,7 @@ const Player = (turn) => {
     const y = Math.floor(Math.random() * 10);
     if (isValidAttack([x, y])) {
       document.querySelector('.announcement').textContent=('Computer is firing')
-      await delay(1500)
+      await delay(200)
       await board.receiveAttack([x, y]);
       prevTargets.push([x, y]);
     } else {
