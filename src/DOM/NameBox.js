@@ -12,7 +12,6 @@ function NameBox(props) {
   const handleSubmit = (e) => {
     e.preventDefault()
     document.getElementById(id).style.display='none';
-    console.log(document.querySelector(`#${id} + h3`))
     document.querySelector(`#${id} + h3`).style.display='block';
     player.setTitle(title)
   }

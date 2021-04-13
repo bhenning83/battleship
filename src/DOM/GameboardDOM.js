@@ -111,4 +111,5 @@ export default GameboardDOM;
 
 //To-do:
 // random placement of ships by the computer to start game
-// fix game over
+//rematch button
+//delay comp attack

@@ -55,11 +55,22 @@ const Player = (turn) => {
     return computer === true ? compAttack(board) : playerAttack(board, coord)
   }
 
-  const compAttack = (board) => {
+  const delay = (time) => {
+    return new Promise((resolve, reject) => {
+      if (isNaN(time)) {
+        reject(new Error('Not a valid number'))
+      }
+      setTimeout(resolve, time);
+    })
+  }
+
+  const compAttack = async (board) => {
     const x = Math.floor(Math.random() * 10);
     const y = Math.floor(Math.random() * 10);
     if (isValidAttack([x, y])) {
-      board.receiveAttack([x, y]);
+      document.querySelector('.announcement').textContent=('Computer is firing')
+      await delay(1500)
+      await board.receiveAttack([x, y]);
       prevTargets.push([x, y]);
     } else {
       compAttack(board)

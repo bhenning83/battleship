@@ -54,11 +54,15 @@ function GameDOM() {
   useEffect(() => {
     if (gameSetup === false) {
       player2.togComputer();
+      player2.setTitle = 'Computer'
       setFleet1(board1.createFleet())
       setFleet2(board2.initFleet())
       setgameSetup(gameSetup => !gameSetup)
     }
     computerPlay()
+    if (turn === true && gameSetup === true) {
+      document.querySelector('.announcement').textContent = 'Fire at will'
+    }
     let ss1 = board1.getSunkShips();
     let ss2 = board2.getSunkShips();
     setSunkShips1([...ss1])
@@ -70,9 +74,9 @@ function GameDOM() {
     <div> 
       <button onClick={() => player2.togComputer()}>Toggle Computer</button>
       <div className={'announcement'} style={{textAlign: 'center', border: '1px solid black'}}>Place yer ships</div>
-      <div>
+      <div style={{display: 'flex', justifyContent: 'space-around'}}>
         <NameBox player={player1} id='title1'/>
-        <NameBox player={player2} id='title2'/>
+        <h3>Computer</h3>
       </div>
       <div className='board-container'>
         <GameboardDOM 
