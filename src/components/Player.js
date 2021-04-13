@@ -1,6 +1,7 @@
-const Player = (title, turn) => {
+const Player = (turn) => {
   let prevTargets = [];
   let computer = false;
+  let title = ''
 
   const togComputer = () => {
     computer = !computer;
@@ -11,6 +12,11 @@ const Player = (title, turn) => {
   const getComputer = () => computer;
 
   const getTitle = () => title
+
+  const setTitle = (t) => {
+    title = t;
+    console.log(t)
+  }
 
   const setTurn = (newTurn) => turn = newTurn;
 
@@ -60,7 +66,7 @@ const Player = (title, turn) => {
     }
   }
 
-  return { attack, compAttack, togComputer, getComputer, getTurn, setTurn, isValidAttack, getTitle }
+  return { attack, compAttack, togComputer, getComputer, getTurn, setTurn, isValidAttack, getTitle, setTitle }
 }
 
 module.exports = Player;

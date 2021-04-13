@@ -3,7 +3,7 @@ import Square from './Square'
 import uniqid from 'uniqid';
 
 function GameboardDOM(props) {
-  const {board, player, attacker, playTurn, sunkShips, turn, fleet} = props;
+  const {board, player, attacker, playTurn, sunkShips, turn, fleet, gameInPlay} = props;
   const [counter, setCounter] = useState(0);
   const [coord, setCoord] = useState([])
   const [vert, setVert] = useState(true);
@@ -38,6 +38,7 @@ function GameboardDOM(props) {
 
   const handleClick = (ary) => {
     counter < 5 ? placeFleet(ary) : targetSelected(ary);
+    if (counter === 4) gameInPlay()
   }
 
   const handleHover = (ary) => {
@@ -45,7 +46,8 @@ function GameboardDOM(props) {
     if (counter < 5) {
 
       //prevents error from hovering before initiating fleet
-      if (fleet.length > 0) {
+      if ((fleet.length > 0) 
+      && player.getComputer() === false) {
         changeGhost(ary)
       }
     }
@@ -68,7 +70,9 @@ function GameboardDOM(props) {
   }
 
   useEffect(() => {
-    if (player.getComputer() === true) setCounter(5)
+    if (player.getComputer() === true) {
+      setCounter(5)
+    }
     document.addEventListener('keydown', handleKeyDown);
     return() => {
       document.removeEventListener('keydown', handleKeyDown)

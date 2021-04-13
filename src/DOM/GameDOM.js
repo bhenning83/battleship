@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import GameboardDOM from './GameboardDOM'
-import Player from '../components/Player'
-import Gameboard from '../components/Gameboard'
+import GameboardDOM from './GameboardDOM';
+import Player from '../components/Player';
+import Gameboard from '../components/Gameboard';
+import NameBox from './NameBox';
 
 function GameDOM() {
-  // const [game] = useState(Game())
-  const [startGame, setStartGame] = useState(true)
-  const [player1] = useState(Player('Player 1', true))
-  const [player2] = useState(Player('Player 2', false))
+  const [gameSetup, setgameSetup] = useState(false)
+  const [player1] = useState(Player(true))
+  const [player2] = useState(Player(false))
   const [board1] = useState(Gameboard())
   const [board2] = useState(Gameboard())
   const [fleet1, setFleet1] = useState([])
@@ -39,16 +39,24 @@ function GameDOM() {
 
         //locks out the turn so neither player can play
         setTurn(t => 0)
+        let winner = board === board2 ? player1 : player2;
+        document.querySelector('.announcement').textContent = `${winner.getTitle()} is the winner!`
       }
     })
   }
+
+  const gameInPlay = () => {
+    if (board1.isFleetPlaced() && board2.isFleetPlaced()) {
+      document.querySelector('.announcement').textContent = 'Fire at will'
+    }
+  }
   
   useEffect(() => {
-    if (startGame === true) {
+    if (gameSetup === false) {
       player2.togComputer();
       setFleet1(board1.createFleet())
       setFleet2(board2.initFleet())
-      setStartGame(startGame => !startGame)
+      setgameSetup(gameSetup => !gameSetup)
     }
     computerPlay()
     let ss1 = board1.getSunkShips();
@@ -61,6 +69,11 @@ function GameDOM() {
   return (
     <div> 
       <button onClick={() => player2.togComputer()}>Toggle Computer</button>
+      <div className={'announcement'} style={{textAlign: 'center', border: '1px solid black'}}>Place yer ships</div>
+      <div>
+        <NameBox player={player1} id='title1'/>
+        <NameBox player={player2} id='title2'/>
+      </div>
       <div className='board-container'>
         <GameboardDOM 
         board={board1}   
@@ -69,7 +82,8 @@ function GameDOM() {
         playTurn={playTurn} 
         sunkShips={sunkShips1} 
         turn={!turn}
-        fleet={fleet1}/>
+        fleet={fleet1}
+        gameInPlay={gameInPlay}/>
         <GameboardDOM 
         board={board2}  
         player={player2} 
